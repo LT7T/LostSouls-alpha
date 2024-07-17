@@ -14,7 +14,7 @@ export const Privacy: React.FC = () => (
     <Text>Hello Anon-Kun,</Text>
     <Text>
       We value your privacy and have taken steps to preserve it while using{" "}
-      <Text as="i">Better Call Sol</Text>:
+      <Text as="i">Lost Souls</Text>:
     </Text>
     <UnorderedList spacing="2">
       <ListItem>
