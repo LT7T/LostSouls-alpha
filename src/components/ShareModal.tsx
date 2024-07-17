@@ -88,18 +88,8 @@ const ShareModalInternal: React.FC = () => {
         <ModalCloseButton />
 
         <ModalBody>
-          <Text mb="3">
-            Send your friends and family Better Call Sol transcations.
-          </Text>
 
           {/* TODO remove when out of beta */}
-          <Alert mb="3" fontSize="sm" status="warning" variant="left-accent">
-            <AlertIcon />
-            <AlertDescription>
-              We'll try our best but during the Alpha, we may not be able to
-              guarantee backward compatibility.
-            </AlertDescription>
-          </Alert>
 
           <Tabs variant="enclosed">
             <TabList>
