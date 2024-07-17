@@ -59,7 +59,7 @@ export const Header: React.FC = () => {
             setFunTitle(!funTitle);
           }}
         >
-          Better Call Sol
+          Lost Souls
         </Text>
         <Example />
       </Hide>
