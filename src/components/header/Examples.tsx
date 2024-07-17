@@ -50,7 +50,7 @@ export const Example: React.FC = () => {
     }
 
     toast({
-      title: "Welcome to Better Call Sol!",
+      title: "Welcome Lost Souls, may you find what you are looking for!",
       description: (
         <Text>
           This is a client for composing and sending Solana transactions.
