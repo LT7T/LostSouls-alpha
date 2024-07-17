@@ -4,7 +4,7 @@ on:
     branches:
       # alpha
       # - beta
-       - main
+        - main
 
 env:
   PROJECT_ID: lostsouls-7d51a
