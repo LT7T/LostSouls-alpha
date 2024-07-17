@@ -189,7 +189,7 @@ export const ClientHeader: React.FC<{ sendButton: React.ReactNode }> = ({
         >
           <AlertIcon />
           <AlertDescription>
-            This is a pre-GA version of Better Call Sol. Use Mainnet at your own
+            This is a pre-GA version of Lost Souls. Use Mainnet at your own
             risk!
           </AlertDescription>
         </Alert>
