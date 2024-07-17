@@ -1,0 +1,164 @@
+name: Deploy
+on:
+  push:
+    branches:
+      # alpha
+      # - beta
+       - main
+
+env:
+  PROJECT_ID: lostsouls-7d51a
+
+jobs:
+  deployStaging:
+    runs-on: ubuntu-latest
+    environment: Staging
+    concurrency: Staging
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      preview_url: ${{ steps.deploy.outputs.preview_url }}
+
+    steps:
+      # Setup
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x (LTS)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
+      - run: npm ci
+
+      # Determine version
+      - id: semantic-version
+        run: npm run release --dry-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Default to the latest tag version if no new release
+      - id: version
+        run: |
+          if [[ ${{ steps.semantic-version.outputs.new-release-published }} = 'true' ]]; then
+            echo "New version: ${{ steps.semantic-version.outputs.new-release-version }}"
+            echo 'semver=${{ steps.semantic-version.outputs.new-release-version }}' >> $GITHUB_OUTPUT
+            echo 'version=${{ steps.semantic-version.outputs.new-release-version }} (Build ${{ github.run_number }}-${{ github.run_attempt }})' >> $GITHUB_OUTPUT
+          else
+            LATEST_TAG=$(git describe --abbrev=0 --tags | tr -d v)
+            echo "Existing version: ${LATEST_TAG}"
+            echo "semver=${LATEST_TAG}" >> $GITHUB_OUTPUT
+            echo "version=${LATEST_TAG} (Build ${{ github.run_number }}-${{ github.run_attempt }})" >> $GITHUB_OUTPUT
+          fi
+
+      # Test (currently commented out)
+      # - run: npm test
+      # - run: npm run lint
+
+      # Build
+      - run: npm run build
+        env:
+          VITE_SEMVER: ${{ steps.version.outputs.semver }}
+          VITE_BUILD: ${{ github.run_number }}-${{ github.run_attempt }}
+          VITE_BUILD_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+      # Release
+      - run: npm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Deploy
+      - id: deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          projectId: "${{ env.PROJECT_ID }}"
+          expires: 30d
+          channelId: staging
+      - id: capture-preview-url
+        run: echo "preview_url=${{ steps.deploy.outputs.preview_url }}" >> $GITHUB_ENV
+
+      # Notify
+      - name: Send Slack notification
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "C07CC2G2RRV",
+              "attachments": [
+                {
+                  "color": "good",
+                  "title": "Deployment Notification",
+                  "text": "Deployment to Staging was successful. Version: ${{ steps.version.outputs.version }}. Preview it at: ${{ env.preview_url }}",
+                  "fields": [
+                    {
+                      "title": "Environment",
+                      "value": "Staging",
+                      "short": true
+                    },
+                    {
+                      "title": "Build URL",
+                      "value": "${{ steps.deploy.outputs.details_url }}",
+                      "short": true
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+  deployProd:
+    runs-on: ubuntu-latest
+    environment: Prod
+    concurrency: Prod
+    needs:
+      - deployStaging
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 18.x (LTS)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      # Setup Firebase CLI
+      - run: npm install -g firebase-tools
+
+      # Promote from Staging to Production
+      - id: promote
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > ./sa.json
+          export GOOGLE_APPLICATION_CREDENTIALS="${PWD}/sa.json"
+          firebase hosting:clone ${PROJECT_ID}:staging ${PROJECT_ID}:live
+
+      # Notify
+      - name: Send Slack notification
+        if: always()
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+            {
+              "channel": "C07CC2G2RRV",
+              "attachments": [
+                {
+                  "color": "good",
+                  "title": "Deployment Notification",
+                  "text": "Deployment to Production was successful. Version: ${{ needs.deployStaging.outputs.version }}. Live at: https://your-project-id.web.app",
+                  "fields": [
+                    {
+                      "title": "Environment",
+                      "value": "Prod",
+                      "short": true
+                    },
+                    {
+                      "title": "App URL",
+                      "value": "https://lostsouls-7d51a.web.app",
+                      "short": true
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

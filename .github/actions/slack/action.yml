@@ -1,0 +1,57 @@
+name: Notify Slack
+
+inputs:
+  success:
+    description: Whether deployment succeeded or not
+    type: boolean
+    required: true
+  bot_token:
+    description: Slack bot token
+    required: true
+  environment:
+    description: Which env was the app deployed to
+    type: environment
+    required: true
+  version:
+    description: The version of the deployed app
+    required: false
+  app_url:
+    description: The URL where the app was deployed to
+    required: false
+  action_url:
+    description: The URL GitHub Action for this build
+    required: false
+    default: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Notify Slack
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        channel-id: C03TSBKKQQ3
+        payload: |
+          {
+            "text": "${{ inputs.success == 'true' && 'SUCCESS' || 'FAIL' }}: ${{ inputs.environment }} - ${{ inputs.version }}\n${{ inputs.app_url }}\n${{ inputs.action_url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Env:* <${{ inputs.app_url || 'http://na' }}|${{ inputs.environment }}>${{ inputs.environment == 'Prod' && ' :fire:' || ''}}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "${{ inputs.success == 'true' && ':rocket: Success' || ':skull_and_crossbones: Fail' }}"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Version:* <${{ inputs.action_url }}|${{ inputs.version || 'N/A' }}>"
+                  }
+                ]
+              }
+            ]
+          }
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.bot_token }}

@@ -1,0 +1,63 @@
+import { Grid } from "@chakra-ui/react";
+import { ChoiceOption } from "components/options/fields/ChoiceOption";
+import { ToggleOption } from "components/options/fields/ToggleOption";
+import { useShallowConfigStore } from "hooks/useConfigStore";
+import React from "react";
+import { Explorer } from "types/state";
+import { EXPLORERS } from "utils/ui-constants";
+
+export const GeneralOptions: React.FC = () => {
+  const [appOptions, set] = useShallowConfigStore((state) => [
+    state.appOptions,
+    state.set,
+  ]);
+
+  return (
+    <Grid templateColumns="1fr 1fr" gap="15px 5px" alignItems="center">
+      <ChoiceOption
+        id="explorer"
+        name="Explorer"
+        get={() => EXPLORERS.find((x) => x.id === appOptions.explorer)!}
+        getChoices={() => EXPLORERS}
+        set={(x) => {
+          set((state) => {
+            state.appOptions.explorer = x as Explorer;
+          });
+        }}
+      />
+
+      <ToggleOption
+        id="autoconnect-wallet"
+        name="Auto-connect wallet"
+        get={() => appOptions.autoConnectWallet}
+        set={(x) => {
+          set((state) => {
+            state.appOptions.autoConnectWallet = x;
+          });
+        }}
+      />
+
+      <ToggleOption
+        id="scroll-to-results"
+        name="Scroll to results"
+        get={() => appOptions.scrollToResults}
+        set={(x) => {
+          set((state) => {
+            state.appOptions.scrollToResults = x;
+          });
+        }}
+      />
+
+      <ToggleOption
+        id="enable-numbering"
+        name="Enable numbering"
+        get={() => appOptions.enableNumbering}
+        set={(x) => {
+          set((state) => {
+            state.appOptions.enableNumbering = x;
+          });
+        }}
+      />
+    </Grid>
+  );
+};
