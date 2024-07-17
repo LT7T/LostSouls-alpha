@@ -133,32 +133,32 @@ jobs:
           firebase hosting:clone ${PROJECT_ID}:staging ${PROJECT_ID}:live
 
       # Notify
-      - name: Send Slack notification
-        if: always()
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "channel": "C07CC2G2RRV",
-              "attachments": [
-                {
-                  "color": "good",
-                  "title": "Deployment Notification",
-                  "text": "Deployment to Production was successful. Version: ${{ needs.deployStaging.outputs.version }}. Live at: https://your-project-id.web.app",
-                  "fields": [
-                    {
-                      "title": "Environment",
-                      "value": "Prod",
-                      "short": true
-                    },
-                    {
-                      "title": "App URL",
-                      "value": "https://lostsouls-7d51a.web.app",
-                      "short": true
-                    }
-                  ]
-                }
-              ]
-            }
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #/- name: Send Slack notification
+      #  if: always()
+      #  uses: slackapi/slack-github-action@v1.23.0
+      # with:
+      #    payload: |
+      #      {
+      #        "channel": "C07CC2G2RRV",
+      #        "attachments": [
+      #          {
+      #            "color": "good",
+      #            "title": "Deployment Notification",
+      #            "text": "Deployment to Production was successful. Version: ${{ needs.deployStaging.outputs.version }}. Live at: https://your-project-id.web.app",
+      #            "fields": [
+      #              {
+      #                "title": "Environment",
+      #                "value": "Prod",
+      #                "short": true
+      #              },
+      #              {
+      #                "title": "App URL",
+      #                "value": "https://lostsouls-7d51a.web.app",
+      #                "short": true
+      #              }
+      #            ]
+      #          }
+      #        ]
+      #      }
+      #  env:
+      #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
