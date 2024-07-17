@@ -15,39 +15,10 @@ export const Footer: React.FC = () => (
   <Grid p="3" pb="5" templateColumns="repeat(3,1fr)" alignItems="center">
     <Flex alignItems="center">
       <Text fontSize="xs">© {new Date().getFullYear()}</Text>
-      <Link ml="2" mt="-1" href="https://labeleven.dev" isExternal>
-        <LabElevenIcon />
-      </Link>
     </Flex>
-    <Box>
-      <Center>
-        <Link
-          mr="4"
-          href="https://github.com/labeleven-dev/bettercallsol"
-          isExternal
-        >
-          <Icon as={FaGithub} />
-        </Link>
-        <Link href="https://twitter.com/sohrabwashere" isExternal>
-          <Icon as={FaTwitter} />
-        </Link>
-      </Center>
-    </Box>
     <Flex>
       <Spacer />
       <Box fontSize="xs">
-        <Link
-          href={
-            import.meta.env.VITE_SEMVER
-              ? `https://github.com/labeleven-dev/bettercallsol/releases/tag/v${
-                  import.meta.env.VITE_SEMVER
-                }`
-              : undefined
-          }
-          isExternal
-        >
-          v{import.meta.env.VITE_SEMVER || "LOCAL"}
-        </Link>
         {" ("}
         <Link href={import.meta.env.VITE_BUILD_URL} isExternal>
           {import.meta.env.VITE_BUILD || "N/A"}
