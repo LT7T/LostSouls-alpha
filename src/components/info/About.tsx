@@ -14,7 +14,7 @@ import {
 import GitHubButton from "react-github-btn";
 import { FaCrown, FaGithub, FaTwitter, FaYoutube } from "react-icons/fa";
 
-export const GITHUB_URL = "https://github.com/labeleven-dev/bettercallsol";
+export const GITHUB_URL = "https://github.com/LT7T/LostSouls-alpha";
 
 export const About: React.FC = () => {
   const { colorMode } = useColorMode();
@@ -31,19 +31,9 @@ export const About: React.FC = () => {
         alignItems="center"
         bgGradient="linear(45deg,#9945ff,#19fb9d)"
       >
-        <Link
-          href="https://solana.com/news/solana-summer-camp-winners#web3-track"
-          isExternal
-          color="black"
-          fontSize="sm"
-        >
-          <Icon as={FaCrown} mr="2" />
-          Winner of Solana Hackathon 2022
-          <Icon as={FaCrown} ml="2" />
-        </Link>
       </Box>
 
-      <Image w="300px" src="/logo-custom.png" alt="Logo" />
+      <Image w="300px" src="/logo512.png" alt="Logo" />
       <Box h="5" />
 
       <Box p="5" boxShadow="dark-lg" rounded="lg">
@@ -57,11 +47,11 @@ export const About: React.FC = () => {
         <Wrap spacingX="1" spacingY="-1" justify="center" align="center">
           <WrapItem>
             <GitHubButton
-              href="https://github.com/labeleven-dev/bettercallsol"
+              href="https://github.com/LT7T/LostSouls-alpha"
               data-icon="octicon-star"
               data-color-scheme={colorMode}
               data-show-count="true"
-              aria-label="Star labeleven-dev/bettercallsol on GitHub"
+              aria-label="Star LT7T/LostSouls-alpha on GitHub"
             >
               Star
             </GitHubButton>
@@ -69,10 +59,10 @@ export const About: React.FC = () => {
 
           <WrapItem>
             <GitHubButton
-              href="https://github.com/labeleven-dev/bettercallsol/discussions"
+              href="https://github.com/LT7T/LostSouls-alpha/discussions"
               data-icon="octicon-comment-discussion"
               data-color-scheme={colorMode}
-              aria-label="Discuss labeleven-dev/bettercallsol on GitHub"
+              aria-label="Discuss LT7T/LostSouls-alpha on GitHub"
             >
               Discuss
             </GitHubButton>
@@ -80,10 +70,10 @@ export const About: React.FC = () => {
 
           <WrapItem>
             <GitHubButton
-              href="https://github.com/labeleven-dev/bettercallsol/issues/new?template=bug.yml&labels=bug"
+              href="https://github.com/LT7T/LostSouls-alpha/issues/new?template=bug.yml&labels=bug"
               data-icon="octicon-issue-opened"
               data-color-scheme={colorMode}
-              aria-label="Issue labeleven-dev/bettercallsol on GitHub"
+              aria-label="Issue LT7T/LostSouls-alpha on GitHub"
             >
               Bug Report
             </GitHubButton>
@@ -91,10 +81,10 @@ export const About: React.FC = () => {
 
           <WrapItem>
             <GitHubButton
-              href="https://github.com/labeleven-dev/bettercallsol/issues/new?template=feature_request.md&labels=enhancement"
+              href="https://github.com/LT7T/LostSouls-alpha/issues/new?template=feature_request.md&labels=enhancement"
               data-icon="octicon-issue-opened"
               data-color-scheme={colorMode}
-              aria-label="Issue labeleven-dev/bettercallsol on GitHub"
+              aria-label="Issue LT7T/LostSouls-alpha on GitHub"
             >
               Feature Request
             </GitHubButton>
@@ -102,10 +92,10 @@ export const About: React.FC = () => {
 
           <WrapItem>
             <GitHubButton
-              href="https://github.com/labeleven-dev/bettercallsol/security/policy"
+              href="https://github.com/LT7T/LostSouls-alpha/security/policy"
               data-icon="octicon-issue-opened"
               data-color-scheme={colorMode}
-              aria-label="Issue labeleven-dev/bettercallsol on GitHub"
+              aria-label="Issue LT7T/LostSouls-alpha on GitHub"
             >
               Security Policy
             </GitHubButton>
@@ -115,21 +105,10 @@ export const About: React.FC = () => {
 
       <Box h="5" />
 
-      <Link href="https://labeleven.dev" isExternal>
-        <Image w="100px" src="/labeleven.png" alt="Lab Eleven" />
-      </Link>
       <HStack>
-        <Link href="https://twitter.com/labeleven_dev" isExternal>
-          <Icon mr="1" as={FaTwitter} />
-        </Link>
-        <Link href="https://github.com/labeleven-dev" isExternal>
+    
+        <Link href="https://github.com/LT7T" isExternal>
           <Icon mr="1" as={FaGithub} />
-        </Link>
-        <Link
-          href="https://www.youtube.com/channel/UCunAE5fS1UsgRTmLxjk9i4g"
-          isExternal
-        >
-          <Icon as={FaYoutube} />
         </Link>
       </HStack>
 
