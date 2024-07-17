@@ -2,7 +2,7 @@ name: Pull Request Build
 on: pull_request
 
 env:
-  PROJECT_ID: bcsol-a8522
+  PROJECT_ID: lostsouls-7d51a
 
 jobs:
 
